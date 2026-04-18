@@ -1,0 +1,30 @@
+name: Validacion por Push
+
+on:
+  push:
+    branches:
+      - 'feature/**'
+      - 'dev/**'
+      - 'test/**'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 1 · Descargar el código
+        uses: actions/checkout@v4
+
+      - name: 2 · Instalar Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: 3 · Instalar dependencias
+        run: npm install
+
+      - name: 4 · Ejecutar tests
+        run: npm test
+
+      - name: 5 · Construir imagen Docker
+        run: docker build -t lucia-api:validate .
