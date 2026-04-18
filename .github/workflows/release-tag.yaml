@@ -1,0 +1,16 @@
+name: Release por Tag
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    uses: asanchezo-duoc/AUY1104-SharedWorkflows/.github/workflows/deploy-api.yaml@main
+    with:
+      image-name: lucia-api
+      image-tag: ${{ github.ref_name }}
+    secrets:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
