@@ -6,7 +6,7 @@
 # Así podés iterar en EA2 sin mergear a main hasta liberar a alumnos.
 # ─────────────────────────────────────────────────────────────
 
-name: EA2 — Lab K8s (main → receta @EA2)
+name: Ej K8S desde alumno
 
 on:
   workflow_dispatch:

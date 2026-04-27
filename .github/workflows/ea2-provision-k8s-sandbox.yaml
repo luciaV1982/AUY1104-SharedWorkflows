@@ -11,7 +11,7 @@
 # Contexto académico: sandbox ~3 h, state desechable, reglas de red amplias.
 # ─────────────────────────────────────────────────────────────
 
-name: EA2 — Provisionar MV + K8s (receta reutilizable)
+name: Provisionar MV + K8S
 
 on:
   workflow_call:
