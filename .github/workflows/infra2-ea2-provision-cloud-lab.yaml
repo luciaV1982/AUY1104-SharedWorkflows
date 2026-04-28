@@ -5,7 +5,7 @@
 # El balanceador es un NLB (TCP). Un ALB clasico no reenvia NodePorts TCP arbitrarios.
 # DNS publico: usar el hostname del NLB o Route53 (inputs opcionales en Terraform).
 
-name: Provisionar EA2 cloud lab (Terraform + k3s + workloads)
+name: INFRA2 - Provisionar EA2 cloud lab (Terraform + k3s + workloads) (local)
 description: Provisiona un laboratorio cloud con VPC, 2x k3s, NLB TCP, RDS, ECR y manifiestos.
 
 on:

@@ -1,7 +1,7 @@
 # Disparador en main: delega en ea2-provision-cloud-lab.yaml en rama EA2.
 # Copia este patron al repo del alumno (con ORG/USER correcto) o usa examples/ea2-invoke-cloud-lab-from-student-repo.yaml
 
-name: EA2 cloud lab (delegado EA2)
+name: INFRA2 - EA2 cloud lab (delegado EA2) (remoto)
 description: Dispara el workflow de provisionamiento de un laboratorio cloud en AWS con VPC, 2x k3s, NLB TCP, RDS, ECR y manifiestos.
 
 on:
