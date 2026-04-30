@@ -17,10 +17,16 @@ on:
         description: Etiqueta que identifica esta versión (por ejemplo el identificador del commit)
         required: true
         type: string
+      k3s-server-public-ip:
+        description: IP pública del servidor K3S
+        required: true
+        type: string
     secrets:
       DOCKER_USERNAME:
         required: true
       DOCKER_PASSWORD:
+        required: true
+      EA2_SSH_PRIVATE_KEY:
         required: true
   # Ejecución manual desde GitHub → Actions → Run workflow (mismos inputs que vía workflow_call)
   workflow_dispatch:
@@ -31,6 +37,10 @@ on:
         type: string
       image-tag:
         description: Etiqueta de esta versión (ej. v1.0.0)
+        required: true
+        type: string
+      k3s-server-public-ip:
+        description: IP pública del servidor K3S
         required: true
         type: string
 
@@ -80,3 +90,14 @@ jobs:
 
           # Sube al Hub todas las etiquetas que acabamos de crear para esta imagen
           docker push --all-tags "${IMAGEN_COMPLETA}"
+
+  deploy-to-k8s:
+    name: Deploy to AWS K3S
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:
+      - name: 1 · Login to AWS K3S
+        run: |
+          echo ${{ secrets.EA2_SSH_PRIVATE_KEY }} > $HOME/.ssh/ea2_lab.pem
+          chmod 600 $HOME/.ssh/ea2_lab.pem
+          ssh -i $HOME/.ssh/ea2_lab.pem -o StrictHostKeyChecking=accept-new "ubuntu@${{ inputs.k3s-server-public-ip }}" 'echo ok'
