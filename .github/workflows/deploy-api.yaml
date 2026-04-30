@@ -6,6 +6,9 @@
 name: Subir la API a Docker Hub (receta reutilizable)
 
 on:
+  # Los repos cliente pasan la IP K3S como input (no hay acceso a vars del caller desde aquí).
+  # Ejemplo en el cliente: with: k3s-server-public-ip: ${{ vars.K3S_SERVER_PUBLIC_IP }}
+  #
   # Cuando otro repo te “llama” y te pasa nombre de imagen, tag y secretos
   workflow_call:
     inputs:
@@ -18,7 +21,9 @@ on:
         required: true
         type: string
       k3s-server-public-ip:
-        description: IP pública del servidor K3S
+        description: >
+          IP pública del servidor K3S. En el repo cliente suele guardarse como variable
+          de repositorio (p. ej. K3S_SERVER_PUBLIC_IP) y pasarse en el bloque with del uses.
         required: true
         type: string
     secrets:
@@ -40,7 +45,7 @@ on:
         required: true
         type: string
       k3s-server-public-ip:
-        description: IP pública del servidor K3S
+        description: IP pública del servidor K3S (si corres este workflow aquí, pulsa el valor; vía workflow_call suele inyectarse desde vars del repo app).
         required: true
         type: string
 
@@ -102,3 +107,13 @@ jobs:
 
       - name: 1 · SSH al servidor K3S
         run: ssh -o StrictHostKeyChecking=accept-new "ubuntu@${{ inputs.k3s-server-public-ip }}" 'echo ok'
+
+      - name: 2 · Get k3s Credentials
+        run: |
+          ssh -o StrictHostKeyChecking=accept-new "ubuntu@${{ inputs.k3s-server-public-ip }}" 'kubectl get secret -n kube-system bootstrap-token-<token> -o jsonpath={.data.token}' > bootstrap-token.txt
+          echo "export KUBECONFIG=/etc/rancher/k3s/k3s.yaml" >> $GITHUB_ENV
+          echo "export KUBERNETES_TOKEN=$(cat bootstrap-token.txt)" >> $GITHUB_ENV
+
+      - name: 3 · Deploy to AWS K3S
+        run: |
+          ssh -o StrictHostKeyChecking=accept-new "ubuntu@${{ inputs.k3s-server-public-ip }}" 'kubectl apply -f -' < k8s/demo.yaml
