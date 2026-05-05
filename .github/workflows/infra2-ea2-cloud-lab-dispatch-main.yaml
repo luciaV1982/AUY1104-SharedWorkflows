@@ -2,7 +2,6 @@
 # Copia este patron al repo del alumno (con ORG/USER correcto) o usa examples/ea2-invoke-cloud-lab-from-student-repo.yaml
 
 name: INFRA2 - EA2 cloud lab (delegado EA2) (remoto)
-description: Dispara el workflow de provisionamiento de un laboratorio cloud en AWS con VPC, 2x k3s, NLB TCP, RDS, ECR y manifiestos.
 
 on:
   workflow_dispatch:
@@ -17,11 +16,6 @@ on:
         required: true
         type: string
         default: t3.medium
-      vpc_octet:
-        description: Octeto X en 10.X.0.0/16 (1-254)
-        required: true
-        type: string
-        default: "42"
 
 jobs:
   delegar:
@@ -29,7 +23,6 @@ jobs:
     with:
       aws_region: ${{ inputs.aws_region }}
       instance_type: ${{ inputs.instance_type }}
-      vpc_octet: ${{ inputs.vpc_octet }}
     secrets:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
