@@ -25,7 +25,7 @@ on:
 
 jobs:
   delegar:
-    uses: asanchezo-duoc/AUY1104-SharedWorkflows/.github/workflows/infra2-ea2-provision-cloud-lab.yaml@EA2
+    uses: luciaV1982/AUY1104-SharedWorkflows/.github/workflows/ea2-provision-k8s-sandbox.yaml@main
     with:
       aws_region: ${{ inputs.aws_region }}
       instance_type: ${{ inputs.instance_type }}
