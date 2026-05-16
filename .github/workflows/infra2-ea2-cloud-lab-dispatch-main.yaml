@@ -1,5 +1,7 @@
-# Disparador en main: delega en infra2-ea2-provision-cloud-lab.yaml en rama EA2.
-# Copia este patron al repo del alumno (con ORG/USER correcto) o usa examples/ea2-invoke-cloud-lab-from-student-repo.yaml
+# Disparador en main: delega en el workflow completo de INFRA2.
+# Este workflow NO construye la infraestructura directamente.
+# Su trabajo es llamar al workflow reutilizable que crea:
+# VPC, 2 VMs Ubuntu con k3s, NLB, RDS primary, RDS replica, ECR y workloads.
 
 name: INFRA2 - EA2 cloud lab (delegado EA2) (remoto)
 
@@ -19,7 +21,7 @@ on:
 
 jobs:
   delegar:
-    uses: luciaV1982/AUY1104-SharedWorkflows/.github/workflows/ea2-provision-k8s-sandbox.yaml@main
+    uses: luciaV1982/AUY1104-SharedWorkflows/.github/workflows/infra2-ea2-provision-cloud-lab.yaml@main
     with:
       aws_region: ${{ inputs.aws_region }}
       instance_type: ${{ inputs.instance_type }}
